@@ -8,3 +8,13 @@ def listen(PORT):
         s.bind(('', PORT))
         s.listen()
         return s.accept()
+
+
+def readData(connection):
+    data = []
+    while True:
+        newData = connection.recv(4096)
+        if not newData:
+            break
+        data += newData
+    return data
