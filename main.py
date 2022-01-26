@@ -10,7 +10,7 @@ def listen(PORT):
         return s.accept()
 
 
-def readData(connection):
+def read_data(connection):
     data = []
     while True:
         newData = connection.recv(4096)
@@ -18,3 +18,9 @@ def readData(connection):
             break
         data += newData
     return data
+
+
+def split_data(data):
+    request_type = int.from_bytes(data[:4])
+    raw_data = data[4:]
+    return request_type, raw_data
