@@ -5,4 +5,4 @@ PORT = 65432        # The port used by the server
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
-    s.sendall(b'{ "type":"model", "city":"New York"}')
+    s.sendall(b'[{"type":"model"}, {"type":"input_data"}, {"type":"predict"}]')
