@@ -12,7 +12,7 @@ def listen(port):
 
 
 def read_data(connection):
-    data = []
+    data = bytes()
     while True:
         newData = connection.recv(4096)
         if not newData:
@@ -23,7 +23,7 @@ def read_data(connection):
 
 def split_data(data):
     request_type = int.from_bytes(data[:4], 'little')
-    raw_data = bytes(data[4:])
+    raw_data = data[4:]
     return request_type, raw_data
 
 
