@@ -1,5 +1,5 @@
 import socket
-from urllib import request
+import json
 
 PORT = 65432
 
@@ -21,15 +21,8 @@ def read_data(connection):
     return data
 
 
-def split_data(data):
-    request_type = int.from_bytes(data[:4], 'little')
-    raw_data = data[4:]
-    return request_type, raw_data
-
-
 connection, address = listen(PORT)
 with connection:
     data = read_data(connection)
-    request_type, raw_data = split_data(data)
-    print(request_type)
-    print(str(raw_data))
+    data = json.loads(data)
+    print(data['type'])
