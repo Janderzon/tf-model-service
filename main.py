@@ -4,6 +4,18 @@ import json
 PORT = 65432
 
 
+class ReturnObject:
+    def __init__(self, type):
+        self.dict = dict()
+        self.dict['type'] = type
+
+    def get(self):
+        return self.dict
+
+    def set_succeeded(self, success):
+        self.dict['succeeded'] = success
+
+
 def listen(port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind(('', port))
@@ -32,15 +44,21 @@ def process_request(json_obj):
 
 
 def read_model(json_obj):
-    return '{"read_model":"false"}'
+    return_obj = ReturnObject('read_model')
+    return_obj.set_succeeded(False)
+    return json.dumps(return_obj.get())
 
 
 def read_input_data(json_obj):
-    return '{"loaded_input_data":"false"}'
+    return_obj = ReturnObject('loaded_input_data')
+    return_obj.set_succeeded(False)
+    return json.dumps(return_obj.get())
 
 
 def make_prediction():
-    return '{"made_prediction":"false"}'
+    return_obj = ReturnObject('made_prediction')
+    return_obj.set_succeeded(False)
+    return json.dumps(return_obj.get())
 
 
 connection, address = listen(PORT)
