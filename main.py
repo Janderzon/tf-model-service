@@ -15,6 +15,12 @@ class ReturnObject:
     def set_succeeded(self, success):
         self.dict['succeeded'] = success
 
+    def set_return_data(self, data):
+        self.dict['data'] = data
+
+    def set_error_message(self, message):
+        self.dict['error'] = message
+
 
 def listen(port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
