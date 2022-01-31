@@ -6,6 +6,7 @@ from tensorflow import keras
 
 PORT = 65432
 _model = None
+_data = None
 
 
 class ReturnObject:
@@ -33,6 +34,10 @@ class ReturnObject:
 
 def set_model(model):
     _model = model
+
+
+def set_input_data(data):
+    _data = data
 
 
 def listen(port):
@@ -77,7 +82,14 @@ def read_model(json_obj):
 
 def read_input_data(json_obj):
     return_obj = ReturnObject('loaded_input_data')
-    return_obj.set_succeeded(False)
+
+    if return_obj.contains('data'):
+        set_input_data(json_obj['data'])
+        return_obj.set_succeeded(True)
+    else:
+        return_obj.set_error_message('No input data provided')
+        return_obj.set_succeeded(False)
+
     return json.dumps(return_obj.get())
 
 
