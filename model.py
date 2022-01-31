@@ -14,3 +14,13 @@ class Model:
 
     def get_input_data(self):
         return self.input_data
+
+    def make_prediction(self):
+        if self.get_model() is None:
+            raise ValueError('No model provided')
+        if self.get_input_data() is None:
+            raise ValueError('No input data provided')
+
+        # TODO: add prediciton logic
+
+        return 0

@@ -54,18 +54,13 @@ class RequestProcessor:
 
     def _make_prediction(self):
         obj_manager = ReturnObjectManager('made_prediction')
-        obj_manager.set_succeeded(False)
 
-        model = self.model.get_model()
-        data = self.model.get_input_data()
-
-        if model is None:
-            obj_manager.set_error_message('No model loaded')
-            return obj_manager.get_return_obj()
-
-        if data is None:
-            obj_manager.set_error_message('No input data')
-            return obj_manager.get_return_obj()
+        try:
+            obj_manager.set_return_data(self.model.make_prediction())
+            obj_manager.set_succeeded(True)
+        except ValueError as e:
+            obj_manager.set_error_message(str(e))
+            obj_manager.set_succeeded(False)
 
         return obj_manager.get_return_obj()
 
