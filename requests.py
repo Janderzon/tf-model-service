@@ -1,4 +1,5 @@
 from model import Model
+from input_data import InputDataManager
 
 
 class ReturnObjectManager:
@@ -27,6 +28,7 @@ class ReturnObjectManager:
 class RequestProcessor:
     def __init__(self):
         self.model = Model()
+        self.input_data_manager = InputDataManager()
 
     def _read_model(self, json_obj):
         obj_manager = ReturnObjectManager('read_model')
@@ -40,11 +42,11 @@ class RequestProcessor:
 
         return obj_manager.get_return_obj()
 
-    def _read_input_data(self, json_obj, data):
+    def _read_input_data(self, json_obj):
         obj_manager = ReturnObjectManager('loaded_input_data')
 
         if obj_manager.contains('data'):
-            data.set_input_data(json_obj['data'])
+            self.input_data_manager.set_input_data(json_obj['data'])
             obj_manager.set_succeeded(True)
         else:
             obj_manager.set_error_message('No input data provided')
@@ -52,12 +54,12 @@ class RequestProcessor:
 
         return obj_manager.get_return_obj()
 
-    def _make_prediction(self, data):
+    def _make_prediction(self):
         obj_manager = ReturnObjectManager('made_prediction')
         obj_manager.set_succeeded(False)
 
         model = self.model.get_model()
-        data = data.get_input_data()
+        data = self.input_data_manager.get_input_data()
 
         if model is None:
             obj_manager.set_error_message('No model loaded')
@@ -69,13 +71,13 @@ class RequestProcessor:
 
         return obj_manager.get_return_obj()
 
-    def process_request(self, json_obj, data):
+    def process_request(self, json_obj):
         request_type = json_obj['type']
         if request_type == 'model':
             return self._read_model(json_obj)
 
         elif request_type == 'input_data':
-            return self._read_input_data(json_obj, data)
+            return self._read_input_data(json_obj)
 
         elif request_type == 'predict':
-            return self._make_prediction(data)
+            return self._make_prediction()
