@@ -1,9 +1,11 @@
 import json
 import socket
+import sys
 import tensorflow as tf
 from tensorflow import keras
 
 PORT = 65432
+_model = None
 
 
 class ReturnObject:
@@ -22,6 +24,15 @@ class ReturnObject:
 
     def set_error_message(self, message):
         self.dict['error'] = message
+
+    def contains(self, key):
+        if key in self.dict:
+            return True
+        return False
+
+
+def set_model(model):
+    _model = model
 
 
 def listen(port):
@@ -53,7 +64,14 @@ def process_request(json_obj):
 
 def read_model(json_obj):
     return_obj = ReturnObject('read_model')
-    return_obj.set_succeeded(False)
+
+    if return_obj.contains('model'):
+        set_model(json_obj['model'])
+        return_obj.set_succeeded(True)
+    else:
+        return_obj.set_error_message('No model provided')
+        return_obj.set_succeeded(False)
+
     return json.dumps(return_obj.get())
 
 
