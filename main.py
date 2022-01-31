@@ -7,17 +7,6 @@ from requests import RequestProcessor
 PORT = 65432
 
 
-class Model:
-    def __init__(self):
-        self.model = None
-
-    def set_model(self, model):
-        self.model = model
-
-    def get_model(self):
-        return self.model
-
-
 class InputDataManager:
     def __init__(self):
         self.data = None
@@ -49,7 +38,6 @@ def read_data(connection):
     return data
 
 
-model = Model()
 input_data_manager = InputDataManager()
 request_processor = RequestProcessor()
 connection, address = listen(PORT)
@@ -59,6 +47,6 @@ with connection:
     return_objs = []
     for json_obj in json_data:
         return_obj = request_processor.process_request(
-            json_obj, model, input_data_manager)
+            json_obj, input_data_manager)
         return_objs.append(return_obj)
     print(json.dumps(return_objs))

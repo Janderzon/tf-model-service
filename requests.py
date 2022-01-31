@@ -1,3 +1,6 @@
+from model import Model
+
+
 class ReturnObjectManager:
     def __init__(self, type):
         self.dict = dict()
@@ -22,11 +25,14 @@ class ReturnObjectManager:
 
 
 class RequestProcessor:
-    def _read_model(self, json_obj, model):
+    def __init__(self):
+        self.model = Model()
+
+    def _read_model(self, json_obj):
         obj_manager = ReturnObjectManager('read_model')
 
         if obj_manager.contains('model'):
-            model.set_model(json_obj['model'])
+            self.model.set_model(json_obj['model'])
             obj_manager.set_succeeded(True)
         else:
             obj_manager.set_error_message('No model provided')
@@ -46,11 +52,11 @@ class RequestProcessor:
 
         return obj_manager.get_return_obj()
 
-    def _make_prediction(self, model, data):
+    def _make_prediction(self, data):
         obj_manager = ReturnObjectManager('made_prediction')
         obj_manager.set_succeeded(False)
 
-        model = model.get_model()
+        model = self.model.get_model()
         data = data.get_input_data()
 
         if model is None:
@@ -63,13 +69,13 @@ class RequestProcessor:
 
         return obj_manager.get_return_obj()
 
-    def process_request(self, json_obj, model, data):
+    def process_request(self, json_obj, data):
         request_type = json_obj['type']
         if request_type == 'model':
-            return self._read_model(json_obj, model)
+            return self._read_model(json_obj)
 
         elif request_type == 'input_data':
             return self._read_input_data(json_obj, data)
 
         elif request_type == 'predict':
-            return self._make_prediction(model, data)
+            return self._make_prediction(data)
