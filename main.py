@@ -1,4 +1,5 @@
 import json
+import re
 import socket
 import sys
 import tensorflow as tf
@@ -36,8 +37,16 @@ def set_model(model):
     _model = model
 
 
+def get_model():
+    return _model
+
+
 def set_input_data(data):
     _data = data
+
+
+def get_input_data():
+    return _data
 
 
 def listen(port):
@@ -96,6 +105,18 @@ def read_input_data(json_obj):
 def make_prediction():
     return_obj = ReturnObject('made_prediction')
     return_obj.set_succeeded(False)
+
+    model = get_model()
+    data = get_input_data()
+
+    if model is None:
+        return_obj.set_error_message('No model loaded')
+        return json.dumps(return_obj.get())
+
+    if data is None:
+        return_obj.set_error_message('No input data')
+        return json.dumps(return_obj.get())
+
     return json.dumps(return_obj.get())
 
 
