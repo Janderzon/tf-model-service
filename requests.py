@@ -1,5 +1,4 @@
 from model import Model
-from input_data import InputDataManager
 
 
 class ReturnObjectManager:
@@ -28,7 +27,6 @@ class ReturnObjectManager:
 class RequestProcessor:
     def __init__(self):
         self.model = Model()
-        self.input_data_manager = InputDataManager()
 
     def _read_model(self, json_obj):
         obj_manager = ReturnObjectManager('read_model')
@@ -46,7 +44,7 @@ class RequestProcessor:
         obj_manager = ReturnObjectManager('loaded_input_data')
 
         if obj_manager.contains('data'):
-            self.input_data_manager.set_input_data(json_obj['data'])
+            self.model.set_input_data(json_obj['data'])
             obj_manager.set_succeeded(True)
         else:
             obj_manager.set_error_message('No input data provided')
@@ -59,7 +57,7 @@ class RequestProcessor:
         obj_manager.set_succeeded(False)
 
         model = self.model.get_model()
-        data = self.input_data_manager.get_input_data()
+        data = self.model.get_input_data()
 
         if model is None:
             obj_manager.set_error_message('No model loaded')
