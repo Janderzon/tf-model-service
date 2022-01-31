@@ -1,5 +1,7 @@
-import socket
 import json
+import socket
+import tensorflow as tf
+from tensorflow import keras
 
 PORT = 65432
 
