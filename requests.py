@@ -1,7 +1,7 @@
 from model import Model
 
 
-class ReturnObjectManager:
+class _ReturnObjectManager:
     def __init__(self, type):
         self.dict = dict()
         self.dict['type'] = type
@@ -24,7 +24,7 @@ class RequestProcessor:
         self.model = Model()
 
     def _read_model(self, json_obj):
-        obj_manager = ReturnObjectManager('read_model')
+        obj_manager = _ReturnObjectManager('read_model')
 
         if 'model' in json_obj:
             self.model.set_model(json_obj['model'])
@@ -36,7 +36,7 @@ class RequestProcessor:
         return obj_manager.get_return_obj()
 
     def _read_input_data(self, json_obj):
-        obj_manager = ReturnObjectManager('loaded_input_data')
+        obj_manager = _ReturnObjectManager('loaded_input_data')
 
         if 'data' in json_obj:
             self.model.set_input_data(json_obj['data'])
@@ -48,7 +48,7 @@ class RequestProcessor:
         return obj_manager.get_return_obj()
 
     def _make_prediction(self):
-        obj_manager = ReturnObjectManager('made_prediction')
+        obj_manager = _ReturnObjectManager('made_prediction')
 
         try:
             obj_manager.set_return_data(self.model.make_prediction())
