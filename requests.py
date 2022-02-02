@@ -75,3 +75,9 @@ class RequestProcessor:
 
         elif request_type == 'predict':
             return self._make_prediction()
+
+        else:
+            obj_manager = _ReturnObjectManager('type_not_recognised')
+            obj_manager.set_succeeded(False)
+            obj_manager.set_error_message('Request type not recognised')
+            return obj_manager.get_return_obj()
