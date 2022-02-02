@@ -16,13 +16,19 @@ def listen(port):
 
 
 def read_data(connection):
-    data = bytes()
+    metadata = bytes()
 
     while True:
-        newData = connection.recv(4096)
-        if not newData:
+        metadata += connection.recv(4096)
+        if len(metadata) >= 4:
             break
-        data += newData
+
+    data = metadata[4:]
+    metadata = metadata[:4]
+    data_len = int.from_bytes(metadata, 'little')
+
+    while len(data) < data_len:
+        data += connection.recv(4096)
 
     return data
 
@@ -36,4 +42,6 @@ with connection:
     for json_obj in json_data:
         return_obj = request_processor.process_request(json_obj)
         return_objs.append(return_obj)
-    print(json.dumps(return_objs))
+    return_str = json.dumps(return_objs)
+    return_bytes = return_str.encode('utf-8')
+    connection.sendall(return_bytes)
