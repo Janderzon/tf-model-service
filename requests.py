@@ -60,6 +60,12 @@ class RequestProcessor:
         return obj_manager.get_return_obj()
 
     def process_request(self, json_obj):
+        if 'type' not in json_obj:
+            obj_manager = _ReturnObjectManager('no_type')
+            obj_manager.set_succeeded(False)
+            obj_manager.set_error_message('No request type provided')
+            return obj_manager.get_return_obj()
+
         request_type = json_obj['type']
         if request_type == 'model':
             return self._read_model(json_obj)
