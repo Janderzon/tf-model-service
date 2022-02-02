@@ -3,20 +3,20 @@ from model import Model
 
 class _ReturnObjectManager:
     def __init__(self, type):
-        self.dict = dict()
-        self.dict['type'] = type
+        self._dict = dict()
+        self._dict['type'] = type
 
     def set_succeeded(self, success):
-        self.dict['succeeded'] = success
+        self._dict['succeeded'] = success
 
     def set_return_data(self, data):
-        self.dict['data'] = data
+        self._dict['data'] = data
 
     def set_error_message(self, message):
-        self.dict['error'] = message
+        self._dict['error'] = message
 
     def get_return_obj(self):
-        return self.dict
+        return self._dict
 
 
 class RequestProcessor:
