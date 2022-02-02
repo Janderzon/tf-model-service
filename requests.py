@@ -79,5 +79,6 @@ class RequestProcessor:
         else:
             obj_manager = _ReturnObjectManager('type_not_recognised')
             obj_manager.set_succeeded(False)
-            obj_manager.set_error_message('Request type not recognised')
+            obj_manager.set_error_message(
+                'Request type ({request_type}) not recognised')
             return obj_manager.get_return_obj()
