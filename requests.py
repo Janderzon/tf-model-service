@@ -18,11 +18,6 @@ class ReturnObjectManager:
     def get_return_obj(self):
         return self.dict
 
-    def contains(self, key):
-        if key in self.dict:
-            return True
-        return False
-
 
 class RequestProcessor:
     def __init__(self):
@@ -31,7 +26,7 @@ class RequestProcessor:
     def _read_model(self, json_obj):
         obj_manager = ReturnObjectManager('read_model')
 
-        if obj_manager.contains('model'):
+        if 'model' in json_obj:
             self.model.set_model(json_obj['model'])
             obj_manager.set_succeeded(True)
         else:
@@ -43,7 +38,7 @@ class RequestProcessor:
     def _read_input_data(self, json_obj):
         obj_manager = ReturnObjectManager('loaded_input_data')
 
-        if obj_manager.contains('data'):
+        if 'data' in json_obj:
             self.model.set_input_data(json_obj['data'])
             obj_manager.set_succeeded(True)
         else:
