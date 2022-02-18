@@ -17,9 +17,11 @@ def predict():
     }
 
 
-@app.route("/model", methods=['POST'])
-def upload_model():
-    _model.set_model(flask.request.data)
+@app.route("/model/<filename>", methods=['POST'])
+def upload_model(filename):
+    with open(filename, 'wb') as fp:
+        fp.write(flask.request.data)
+    _model.set_model(filename)
     return '', 204
 
 

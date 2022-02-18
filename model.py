@@ -1,10 +1,13 @@
+import tensorflow as tf
+
+
 class Model:
     def __init__(self):
         self.model = None
         self.input_data = None
 
     def set_model(self, model):
-        self.model = model
+        self.model = tf.keras.models.load_model(model)
 
     def get_model(self):
         return self.model
