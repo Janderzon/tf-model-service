@@ -11,7 +11,7 @@ def predict():
         prediciton = _model.make_prediction()
     except ValueError as error:
         error = flask.jsonify(error=str(error))
-        flask.abort(error, 400)
+        return error, 400
     return {
         'prediction': prediciton
     }
