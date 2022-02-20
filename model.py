@@ -13,7 +13,7 @@ class Model:
         data = data.dropna(how='all', axis='columns')
 
         date_time = pd.to_datetime(
-            data.pop('Time'), format='%d/%m/%Y %H:%M')
+            data.pop('Time'), format='%d/%m/%Y %H:%M:%S')
 
         timestamp_s = date_time.map(datetime.datetime.timestamp)
         day = 24 * 60 * 60
@@ -23,6 +23,9 @@ class Model:
         data['Day cos'] = np.cos(timestamp_s * (2 * np.pi / day))
         data['Year sin'] = np.sin(timestamp_s * (2 * np.pi / year))
         data['Year cos'] = np.cos(timestamp_s * (2 * np.pi / year))
+
+        self.mean = data['Ask'].mean()
+        self.std = data['Ask'].std()
 
         mean = data.mean()
         std = data.std()
@@ -52,4 +55,5 @@ class Model:
         if self.get_input_data() is None:
             raise ValueError('No input data provided')
 
-        return self.model.predict(self.input_data)
+        prediction = self.model.predict(self.input_data)
+        return float(prediction) * self.std + self.mean

@@ -13,7 +13,7 @@ def predict():
         error = flask.jsonify(error=str(error))
         return error, 400
     return {
-        'prediction': str(float(prediciton))
+        'prediction': str(prediciton)
     }
 
 
