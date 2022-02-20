@@ -25,7 +25,9 @@ def upload_model(filename):
     return '', 204
 
 
-@app.route("/data", methods=['POST'])
-def upload_data():
-    _model.set_input_data(flask.request.data)
+@app.route("/data/<filename>", methods=['POST'])
+def upload_data(filename):
+    with open(filename, 'wb') as fp:
+        fp.write(flask.request.data)
+    _model.set_input_data(filename)
     return '', 204
