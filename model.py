@@ -29,7 +29,7 @@ class Model:
         data = (data - mean) / std
 
         data = tf.convert_to_tensor(data)
-        data = tf.reshape(data, [1, 24, 5])
+        data = tf.reshape(data, [1, 5, 5])
 
         return data
 
@@ -52,6 +52,4 @@ class Model:
         if self.get_input_data() is None:
             raise ValueError('No input data provided')
 
-        # TODO: add prediciton logic
-
-        return 0
+        return self.model.predict(self.input_data)
