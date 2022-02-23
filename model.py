@@ -17,10 +17,16 @@ class Model:
 
         timestamp_s = date_time.map(datetime.datetime.timestamp)
         day = 24 * 60 * 60
+        week = 7 * day
         year = 365.2425 * day
+        month = year / 12
 
         data['Day sin'] = np.sin(timestamp_s * (2 * np.pi / day))
         data['Day cos'] = np.cos(timestamp_s * (2 * np.pi / day))
+        data['Week sin'] = np.sin(timestamp_s * (2 * np.pi / week))
+        data['Week cos'] = np.cos(timestamp_s * (2 * np.pi / week))
+        data['Month sin'] = np.sin(timestamp_s * (2 * np.pi / month))
+        data['Month cos'] = np.cos(timestamp_s * (2 * np.pi / month))
         data['Year sin'] = np.sin(timestamp_s * (2 * np.pi / year))
         data['Year cos'] = np.cos(timestamp_s * (2 * np.pi / year))
 
@@ -32,7 +38,7 @@ class Model:
         data = (data - mean) / std
 
         data = tf.convert_to_tensor(data)
-        data = tf.reshape(data, [1, 5, 5])
+        data = tf.reshape(data, [1, 5, 9])
 
         return data
 
