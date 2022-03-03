@@ -13,7 +13,7 @@ class Model:
         data = data.dropna(how='all', axis='columns')
 
         date_time = pd.to_datetime(
-            data.pop('Time'), format='%d/%m/%Y %H:%M:%S')
+            data.pop('OpenTime'), format='%d/%m/%Y %H:%M:%S')
 
         timestamp_s = date_time.map(datetime.datetime.timestamp)
         day = 24 * 60 * 60
@@ -30,8 +30,8 @@ class Model:
         data['Year sin'] = np.sin(timestamp_s * (2 * np.pi / year))
         data['Year cos'] = np.cos(timestamp_s * (2 * np.pi / year))
 
-        self.mean = data['Ask'].mean()
-        self.std = data['Ask'].std()
+        self.mean = data['OpenPrice'].mean()
+        self.std = data['OpenPrice'].std()
 
         mean = data.mean()
         std = data.std()
