@@ -30,8 +30,8 @@ class Model:
         data['Year sin'] = np.sin(timestamp_s * (2 * np.pi / year))
         data['Year cos'] = np.cos(timestamp_s * (2 * np.pi / year))
 
-        self.mean = data['OpenPrice'].mean()
-        self.std = data['OpenPrice'].std()
+        self.mean = data['ClosePrice'].mean()
+        self.std = data['ClosePrice'].std()
 
         mean = data.mean()
         std = data.std()
